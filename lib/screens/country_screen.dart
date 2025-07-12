@@ -1,17 +1,19 @@
 import 'package:country_api/model/country.dart';
-import 'package:country_api/model/name.dart';
 import 'package:country_api/screens/country_details.dart';
+import 'package:country_api/screens/login_screen.dart';
 import 'package:country_api/service/country_service.dart';
+import 'package:country_api/service/firebase_auth_service.dart';
 import 'package:flutter/material.dart';
 
 class CountriesScreen extends StatefulWidget {
-  const CountriesScreen({Key? key}) : super(key: key);
+  const CountriesScreen({Key? key, required String title}) : super(key: key);
 
   @override
   _CountriesScreenState createState() => _CountriesScreenState();
 }
 
 class _CountriesScreenState extends State<CountriesScreen> {
+  final FirebaseAuthService _auth = FirebaseAuthService();
   final CountryService _countryService = CountryService();
   TextEditingController textEditingController = TextEditingController();
 
@@ -59,6 +61,22 @@ class _CountriesScreenState extends State<CountriesScreen> {
           'Países do Mundo',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+             _auth.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return LoginPage();
+                  },
+                ),
+              );
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
         backgroundColor: const Color.fromARGB(255, 245, 74, 22),
         centerTitle: true,
       ),
@@ -80,13 +98,13 @@ class _CountriesScreenState extends State<CountriesScreen> {
             ListTile(
               title: const Text("Detalhes"),
               leading: Icon(Icons.map),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             ListTile(
-                title: const Text('Item 2'),
-                leading: Icon(Icons.maps_home_work),
-                onTap: () {}),
+              title: const Text('Item 2'),
+              leading: Icon(Icons.maps_home_work),
+              onTap: () {},
+            ),
           ],
         ),
       ),
